@@ -23,5 +23,5 @@ model Event {
   location     String
   maxAttendees Int
   createdAt    DateTime @default(now())
-  updatedAt    DateTime
+  updatedAt    DateTime @updatedAt
 }

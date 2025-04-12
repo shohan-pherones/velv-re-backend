@@ -2150,7 +2150,7 @@ export namespace Prisma {
     location: string
     maxAttendees: number
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
   }
 
   export type EventUncheckedCreateInput = {
@@ -2162,7 +2162,7 @@ export namespace Prisma {
     location: string
     maxAttendees: number
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
   }
 
   export type EventUpdateInput = {
@@ -2198,7 +2198,7 @@ export namespace Prisma {
     location: string
     maxAttendees: number
     createdAt?: Date | string
-    updatedAt: Date | string
+    updatedAt?: Date | string
   }
 
   export type EventUpdateManyMutationInput = {
