@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { validateWithZod } from 'src/common/utils/zod-validator';
 import { CreateEventDto, CreateEventSchema } from './dto/create-event.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -21,5 +21,19 @@ export class EventsService {
     return this.prisma.event.findMany({
       orderBy: { dateTime: 'asc' },
     });
+  }
+
+  async findOne(id: string) {
+    const event = await this.prisma.event.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+
+    return event;
   }
 }
