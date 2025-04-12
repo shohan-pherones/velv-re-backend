@@ -16,4 +16,10 @@ export class EventsService {
 
     return event;
   }
+
+  async findAll() {
+    return this.prisma.event.findMany({
+      orderBy: { dateTime: 'asc' },
+    });
+  }
 }
