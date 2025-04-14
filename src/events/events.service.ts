@@ -8,11 +8,16 @@ import { UpdateEventDto, UpdateEventSchema } from './dto/update-event.dto';
 export class EventsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: CreateEventDto) {
+  async create(data: CreateEventDto, userId: string) {
     const validatedData = validateWithZod(CreateEventSchema, data);
 
     const event = await this.prisma.event.create({
-      data: validatedData,
+      data: {
+        ...validatedData,
+        user: {
+          connect: { id: userId },
+        },
+      },
     });
 
     return event;
