@@ -4,10 +4,14 @@ import { validateWithZod } from 'src/common/utils/zod-validator';
 import { PrismaService } from '../prisma/prisma.service';
 import { SignUpDto, SignUpSchema } from './dto/signup.dto';
 import { SignInDto, SignInSchema } from './dto/signin.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private jwtService: JwtService,
+  ) {}
 
   async signup(data: SignUpDto) {
     const parsed = validateWithZod(SignUpSchema, data);
@@ -29,9 +33,18 @@ export class AuthService {
       },
     });
 
+    const token = this.jwtService.sign({
+      sub: user.id,
+      email: user.email,
+    });
+
     const { password: _unused, ...safeUser } = user;
     void _unused;
-    return safeUser;
+
+    return {
+      user: safeUser,
+      token,
+    };
   }
 
   async signin(data: SignInDto) {
@@ -54,9 +67,17 @@ export class AuthService {
       throw new BadRequestException('Invalid email or password');
     }
 
+    const token = this.jwtService.sign({
+      sub: user.id,
+      email: user.email,
+    });
+
     const { password: _unused, ...safeUser } = user;
     void _unused;
 
-    return safeUser;
+    return {
+      user: safeUser,
+      token,
+    };
   }
 }
